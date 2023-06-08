@@ -2,6 +2,7 @@ import { BufferComposer, ComposableBuffer } from '@defichain/jellyfish-buffer'
 import { Script } from '../../tx'
 import { CScript } from '../../tx_composer'
 import { CScriptBalances, CTokenBalance, CTokenBalanceVarInt, ScriptBalances, TokenBalanceUInt32, TokenBalanceVarInt } from './dftx_balance'
+import { TransferDomainInfo } from '@defichain/jellyfish-api-core/dist/category/account'
 
 /**
  * UtxosToAccount DeFi Transaction
@@ -100,7 +101,7 @@ export class CAnyAccountToAccount extends ComposableBuffer<AnyAccountToAccount> 
 }
 
 /**
- * TransferDomain DeFi Transaction
+  * TransferDomain DeFi Transaction
  */
 export enum TransferDomainType {
   /** type for DVM Token To EVM transfer */
@@ -119,11 +120,11 @@ export interface TransferDomain {
  * Composable TransferDomain, C stands for Composable.
  * Immutable by design, bi-directional fromBuffer, toBuffer deep composer.
  */
-export class CTransferDomain extends ComposableBuffer<TransferDomain> {
+export class CTransferDomain extends ComposableBuffer<TransferDomainInfo> {
   static OP_CODE = 0x38 // '8'
   static OP_NAME = 'OP_DEFI_TX_TRANSFER_DOMAIN'
 
-  composers (td: TransferDomain): BufferComposer[] {
+  composers (td: TransferDomainInfo): BufferComposer[] {
     return [
       ComposableBuffer.uInt8(() => td.type, v => td.type = v),
       ComposableBuffer.compactSizeArray(() => td.from, v => td.from = v, v => new CScriptBalances(v)),

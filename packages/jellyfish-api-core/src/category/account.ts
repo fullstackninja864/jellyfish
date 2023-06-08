@@ -52,11 +52,23 @@ export enum SelectionModeType {
 }
 
 export enum TransferDomainType {
-  /** type for DVM Token To EVM transfer */
-  DVMTokenToEVM = 1,
-  /** type for EVM To DVM Token transfer */
-  EVMToDVMToken = 2,
+  /** type for DVM */
+  DVM = 1,
+  /** type for EVM */
+  EVM = 2,
 };
+
+export interface TransferDomainElement {
+  address: string
+  amount: string
+  domain: TransferDomainType
+  data: string
+}
+
+export interface TransferDomainInfo {
+  src: TransferDomainElement
+  dst: TransferDomainElement
+}
 
 /**
  * Account RPCs for DeFi Blockchain
@@ -286,13 +298,11 @@ export class Account {
   /**
    * Create an transfer domain transaction submitted to a connected node.
    *
-   * @param {TransferDomainType} type
-   * @param {BalanceTransferPayload} from
-   * @param {BalanceTransferPayload} to
+   * @param {TransferDomainInfo} transfers
    * @return {Promise<string>}
    */
-  async transferDomain (type: TransferDomainType, from: BalanceTransferPayload, to: BalanceTransferPayload): Promise<string> {
-    return await this.client.call('transferdomain', [type, from, to], 'number')
+  async transferDomain (transfers: TransferDomainInfo[]): Promise<string> {
+    return await this.client.call('transferdomain', [transfers], 'number')
   }
 
   /**

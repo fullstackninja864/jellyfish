@@ -159,18 +159,26 @@ Create a transfer domain transaction submitted to a connected node.
 
 ```ts title="client.account.transferDomain()"
 interface account {
-  transferDomain (type: TransferDomainType, from: BalanceTransferPayload, to: BalanceTransferPayload): Promise<string>
+  transferDomain (transfers: TransferDomainInfo[]): Promise<string>
 }
 
-interface BalanceTransferPayload {
-  [key: string]: string // `${number}@${string}`
+interface TransferDomainElement {
+  address: string
+  amount: string
+  domain: TransferDomainType
+  data: string
+}
+
+interface TransferDomainInfo {
+  src: TransferDomainElement
+  dst: TransferDomainElement
 }
 
 enum TransferDomainType {
-  /** type for DVM Token To EVM transfer */
-  DVMTokenToEVM = 1,
-  /** type for EVM To DVM Token transfer */
-  EVMToDVMToken = 2,
+  /** type for DVM */
+  DVM = 1,
+  /** type for EVM */
+  EVM = 2,
 };
 ```
 

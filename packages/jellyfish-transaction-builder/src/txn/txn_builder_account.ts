@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import {
   AccountToAccount, AccountToUtxos, UtxosToAccount, SetFutureSwap,
-  DeFiTransactionConstants, OP_CODES, Script, Transaction, TransactionSegWit, Vout, TransferDomain
+  DeFiTransactionConstants, OP_CODES, Script, Transaction, TransactionSegWit, Vout, TransferDomainInfo
 } from '@defichain/jellyfish-transaction'
 import { P2WPKHTxnBuilder } from './txn_builder'
 import { TxnBuilderError, TxnBuilderErrorType } from './txn_builder_error'
@@ -132,7 +132,7 @@ export class TxnBuilderAccount extends P2WPKHTxnBuilder {
    * @returns {Promise<TransactionSegWit>}
    */
 
-  async transferDomain (transferDomain: TransferDomain, changeScript: Script): Promise<TransactionSegWit> {
+  async transferDomain (transferDomain: TransferDomainInfo, changeScript: Script): Promise<TransactionSegWit> {
     return await super.createDeFiTx(
       OP_CODES.OP_DEFI_TX_TRANSFER_DOMAIN(transferDomain),
       changeScript
